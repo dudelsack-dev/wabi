@@ -1,65 +1,117 @@
 import Image from "next/image";
+import Link from "next/link";
+import { getFeaturedProducts } from "@/lib/products";
+import { getAllPosts } from "@/lib/blog";
+import ProductCard from "@/components/product/ProductCard";
+import BlogCard from "@/components/blog/BlogCard";
+import FadeIn from "@/components/ui/FadeIn";
 
-export default function Home() {
+export default function HomePage() {
+  const featured = getFeaturedProducts();
+  const latestPosts = getAllPosts().slice(0, 3);
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
+    <>
+      {/* Hero */}
+      <section className="relative h-[70vh] min-h-[500px] flex items-center justify-center">
         <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
+          src="https://images.unsplash.com/photo-1545048702-79362596cdc9?w=1600&q=80"
+          alt="Japanese pottery"
+          fill
+          className="object-cover"
           priority
         />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+        <div className="absolute inset-0 bg-charcoal/40" />
+        <div className="relative z-10 text-center px-6">
+          <FadeIn>
+            <h1 className="font-serif text-4xl md:text-6xl text-warm-white mb-4 tracking-wide">
+              侘 wabi
+            </h1>
+            <p className="text-warm-white/80 text-lg md:text-xl max-w-lg mx-auto leading-relaxed">
+              Japanese artisanal pottery and kitchenware, crafted with the quiet beauty of imperfection.
+            </p>
+            <Link
+              href="/shop"
+              className="inline-block mt-8 px-8 py-3 border border-warm-white/60 text-warm-white text-sm tracking-widest uppercase hover:bg-warm-white/10 transition-colors"
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+              Explore the Collection
+            </Link>
+          </FadeIn>
+        </div>
+      </section>
+
+      {/* Philosophy teaser */}
+      <section className="max-w-3xl mx-auto px-6 py-20 text-center">
+        <FadeIn>
+          <p className="text-xs uppercase tracking-[0.3em] text-stone mb-6">Our Philosophy</p>
+          <h2 className="font-serif text-2xl md:text-3xl text-charcoal leading-relaxed mb-6">
+            Nothing lasts. Nothing is finished. Nothing is perfect.
+          </h2>
+          <p className="text-stone-dark leading-relaxed mb-8">
+            Wabi-sabi teaches us to find beauty in the imperfect, the impermanent, and the incomplete.
+            Each piece in our collection carries the marks of its maker — the trace of a hand, the breath
+            of a kiln, the patience of centuries-old craft traditions.
           </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            href="/about"
+            className="text-sm text-earth-red hover:text-clay-dark transition-colors tracking-wide"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+            Read our story &rarr;
+          </Link>
+        </FadeIn>
+      </section>
+
+      {/* Featured Products */}
+      <section className="max-w-6xl mx-auto px-6 pb-20">
+        <FadeIn>
+          <div className="flex items-end justify-between mb-10">
+            <div>
+              <p className="text-xs uppercase tracking-[0.3em] text-stone mb-2">Featured</p>
+              <h2 className="font-serif text-2xl text-charcoal">Selected Pieces</h2>
+            </div>
+            <Link
+              href="/shop"
+              className="text-sm text-stone-dark hover:text-charcoal transition-colors"
+            >
+              View all &rarr;
+            </Link>
+          </div>
+        </FadeIn>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-10">
+          {featured.map((product, i) => (
+            <FadeIn key={product.slug} delay={i * 100}>
+              <ProductCard product={product} />
+            </FadeIn>
+          ))}
         </div>
-      </main>
-    </div>
+      </section>
+
+      {/* Latest Blog Posts */}
+      <section className="bg-cream-light py-20">
+        <div className="max-w-6xl mx-auto px-6">
+          <FadeIn>
+            <div className="flex items-end justify-between mb-10">
+              <div>
+                <p className="text-xs uppercase tracking-[0.3em] text-stone mb-2">Journal</p>
+                <h2 className="font-serif text-2xl text-charcoal">Latest Stories</h2>
+              </div>
+              <Link
+                href="/blog"
+                className="text-sm text-stone-dark hover:text-charcoal transition-colors"
+              >
+                Read all &rarr;
+              </Link>
+            </div>
+          </FadeIn>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+            {latestPosts.map((post, i) => (
+              <FadeIn key={post.slug} delay={i * 100}>
+                <BlogCard post={post} />
+              </FadeIn>
+            ))}
+          </div>
+        </div>
+      </section>
+    </>
   );
 }
