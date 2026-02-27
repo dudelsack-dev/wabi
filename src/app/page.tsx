@@ -3,11 +3,13 @@ import Link from "next/link";
 import { getFeaturedProducts } from "@/lib/products";
 import { getAllPosts } from "@/lib/blog";
 import ProductCard from "@/components/product/ProductCard";
+
+export const dynamic = "force-dynamic";
 import BlogCard from "@/components/blog/BlogCard";
 import FadeIn from "@/components/ui/FadeIn";
 
-export default function HomePage() {
-  const featured = getFeaturedProducts();
+export default async function HomePage() {
+  const featured = await getFeaturedProducts();
   const latestPosts = getAllPosts().slice(0, 3);
 
   return (

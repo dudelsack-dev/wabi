@@ -1,34 +1,33 @@
 import { NextResponse } from "next/server";
-import fs from "fs";
-import path from "path";
+import { createServerClient } from "@/lib/supabase";
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
+    const supabase = createServerClient();
 
     const order = {
       id: `wabi-${Date.now()}`,
-      ...body,
+      items: body.items,
+      subtotal: body.subtotal,
+      customer: body.customer,
       status: "pending",
-      createdAt: new Date().toISOString(),
     };
 
-    console.log("New order received:", JSON.stringify(order, null, 2));
+    const { error: orderError } = await supabase.from("orders").insert(order);
+    if (orderError) throw orderError;
 
-    // Write to local orders file
-    const ordersPath = path.join(process.cwd(), "orders.json");
-    let orders = [];
-    try {
-      const existing = fs.readFileSync(ordersPath, "utf-8");
-      orders = JSON.parse(existing);
-    } catch {
-      // file doesn't exist yet
+    // Decrement stock for each item
+    for (const item of body.items) {
+      await supabase.rpc("decrement_stock", {
+        product_slug: item.slug,
+        qty: item.quantity,
+      });
     }
-    orders.push(order);
-    fs.writeFileSync(ordersPath, JSON.stringify(orders, null, 2));
 
     return NextResponse.json({ success: true, orderId: order.id });
-  } catch {
+  } catch (err) {
+    console.error("Order error:", err);
     return NextResponse.json(
       { success: false, error: "Failed to process order" },
       { status: 500 }

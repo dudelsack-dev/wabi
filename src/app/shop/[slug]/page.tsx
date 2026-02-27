@@ -1,13 +1,9 @@
 import { notFound } from "next/navigation";
-import { getAllProducts, getProductBySlug, formatPrice } from "@/lib/products";
+import { getProductBySlug, formatPrice } from "@/lib/products";
 import ProductGallery from "@/components/product/ProductGallery";
 import AddToCartButton from "@/components/cart/AddToCartButton";
 import Badge from "@/components/ui/Badge";
 import type { Metadata } from "next";
-
-export function generateStaticParams() {
-  return getAllProducts().map((p) => ({ slug: p.slug }));
-}
 
 export async function generateMetadata({
   params,
@@ -15,7 +11,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const product = getProductBySlug(slug);
+  const product = await getProductBySlug(slug);
   if (!product) return {};
   return {
     title: product.name,
@@ -29,7 +25,7 @@ export default async function ProductPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const product = getProductBySlug(slug);
+  const product = await getProductBySlug(slug);
   if (!product) notFound();
 
   return (
@@ -61,6 +57,17 @@ export default async function ProductPage({
               <span className="text-stone">Origin</span>
               <span className="text-charcoal">{product.origin}</span>
             </div>
+          </div>
+
+          {/* Stock status */}
+          <div className="text-sm">
+            {product.stock === 0 ? (
+              <span className="text-earth-red">Out of Stock</span>
+            ) : product.stock != null && product.stock <= 3 ? (
+              <span className="text-earth-red">Low Stock ({product.stock} left)</span>
+            ) : (
+              <span className="text-stone-dark">In Stock</span>
+            )}
           </div>
 
           <AddToCartButton product={product} />

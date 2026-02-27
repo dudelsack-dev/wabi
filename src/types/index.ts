@@ -9,6 +9,8 @@ export interface Product {
   artisan: string;
   origin: string;
   inStock: boolean;
+  stock?: number;
+  featured?: boolean;
 }
 
 export interface CartItem {
@@ -28,7 +30,7 @@ export interface Order {
     postalCode: string;
     country: string;
   };
-  status: "pending";
+  status: "pending" | "confirmed" | "shipped" | "delivered" | "cancelled";
   createdAt: string;
 }
 
