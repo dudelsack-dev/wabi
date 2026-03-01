@@ -12,12 +12,14 @@ export default function ImageUploader({
   onChange: (images: string[]) => void;
 }) {
   const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState("");
 
   async function handleUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
 
     setUploading(true);
+    setUploadError("");
     try {
       const formData = new FormData();
       formData.append("file", file);
@@ -31,8 +33,8 @@ export default function ImageUploader({
 
       const { url } = await res.json();
       onChange([...images, url]);
-    } catch (err) {
-      console.error("Upload error:", err);
+    } catch {
+      setUploadError("Image upload failed. Please try again.");
     } finally {
       setUploading(false);
       // Reset input
@@ -46,6 +48,9 @@ export default function ImageUploader({
 
   return (
     <div className="space-y-3">
+      {uploadError && (
+        <p className="text-xs text-earth-red">{uploadError}</p>
+      )}
       <div className="flex flex-wrap gap-3">
         {images.map((url, i) => (
           <div key={i} className="relative w-24 h-24 bg-cream rounded overflow-hidden group">
