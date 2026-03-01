@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { getFeaturedProducts } from "@/lib/products";
 import { getAllPosts } from "@/lib/blog";
+import { getSetting } from "@/lib/settings";
 import ProductCard from "@/components/product/ProductCard";
 
 export const dynamic = "force-dynamic";
@@ -11,13 +12,17 @@ import FadeIn from "@/components/ui/FadeIn";
 export default async function HomePage() {
   const featured = await getFeaturedProducts();
   const latestPosts = getAllPosts().slice(0, 3);
+  const heroImage = await getSetting(
+    "hero_image_url",
+    "https://images.unsplash.com/photo-1725917482778-472d78c69278?w=1600&q=80"
+  );
 
   return (
     <>
       {/* Hero */}
       <section className="relative h-[70vh] min-h-[500px] flex items-center justify-center">
         <Image
-          src="https://images.unsplash.com/photo-1725917482778-472d78c69278?w=1600&q=80"
+          src={heroImage}
           alt="Japanese pottery bowls"
           fill
           className="object-cover"
