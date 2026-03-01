@@ -31,13 +31,19 @@ export default function ShopClient({ products }: { products: Product[] }) {
         </div>
       </FadeIn>
 
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-10">
-        {filtered.map((product, i) => (
-          <FadeIn key={product.slug} delay={i * 50}>
-            <ProductCard product={product} />
-          </FadeIn>
-        ))}
-      </div>
+      {filtered.length === 0 ? (
+        <div className="py-24 text-center">
+          <p className="text-stone-dark">No products found.</p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-10">
+          {filtered.map((product, i) => (
+            <FadeIn key={product.slug} delay={i * 50}>
+              <ProductCard product={product} />
+            </FadeIn>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

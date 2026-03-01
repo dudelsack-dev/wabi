@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { createBrowserClient } from "@/lib/supabase";
 import { formatPrice } from "@/lib/products";
+import { Fragment } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 
 interface OrderRow {
@@ -80,9 +81,8 @@ export default function AdminOrdersPage() {
             </thead>
             <tbody>
               {orders.map((order) => (
-                <>
+                <Fragment key={order.id}>
                   <tr
-                    key={order.id}
                     className="border-b border-cream hover:bg-cream-light transition-colors cursor-pointer"
                     onClick={() => setExpandedId(expandedId === order.id ? null : order.id)}
                   >
@@ -115,7 +115,7 @@ export default function AdminOrdersPage() {
                     </td>
                   </tr>
                   {expandedId === order.id && (
-                    <tr key={`${order.id}-detail`} className="border-b border-cream bg-cream-light/50">
+                    <tr className="border-b border-cream bg-cream-light/50">
                       <td colSpan={7} className="px-4 py-4">
                         <div className="grid grid-cols-2 gap-6 text-sm">
                           <div>
@@ -139,7 +139,7 @@ export default function AdminOrdersPage() {
                       </td>
                     </tr>
                   )}
-                </>
+                </Fragment>
               ))}
             </tbody>
           </table>

@@ -33,10 +33,14 @@ function mapRow(row: ProductRow): Product {
 }
 
 export async function getAllProducts(): Promise<Product[]> {
-  const supabase = createServerClient();
-  const { data, error } = await supabase.from("products").select("*").order("created_at");
-  if (error) throw error;
-  return (data as ProductRow[]).map(mapRow);
+  try {
+    const supabase = createServerClient();
+    const { data, error } = await supabase.from("products").select("*").order("created_at");
+    if (error) throw error;
+    return (data as ProductRow[]).map(mapRow);
+  } catch {
+    return [];
+  }
 }
 
 export async function getProductBySlug(slug: string): Promise<Product | undefined> {
@@ -53,25 +57,33 @@ export async function getProductBySlug(slug: string): Promise<Product | undefine
 export async function getProductsByCategory(
   category: "pottery" | "kitchenware"
 ): Promise<Product[]> {
-  const supabase = createServerClient();
-  const { data, error } = await supabase
-    .from("products")
-    .select("*")
-    .eq("category", category)
-    .order("created_at");
-  if (error) throw error;
-  return (data as ProductRow[]).map(mapRow);
+  try {
+    const supabase = createServerClient();
+    const { data, error } = await supabase
+      .from("products")
+      .select("*")
+      .eq("category", category)
+      .order("created_at");
+    if (error) throw error;
+    return (data as ProductRow[]).map(mapRow);
+  } catch {
+    return [];
+  }
 }
 
 export async function getFeaturedProducts(): Promise<Product[]> {
-  const supabase = createServerClient();
-  const { data, error } = await supabase
-    .from("products")
-    .select("*")
-    .eq("featured", true)
-    .limit(4);
-  if (error) throw error;
-  return (data as ProductRow[]).map(mapRow);
+  try {
+    const supabase = createServerClient();
+    const { data, error } = await supabase
+      .from("products")
+      .select("*")
+      .eq("featured", true)
+      .limit(4);
+    if (error) throw error;
+    return (data as ProductRow[]).map(mapRow);
+  } catch {
+    return [];
+  }
 }
 
 export function formatPrice(price: number): string {

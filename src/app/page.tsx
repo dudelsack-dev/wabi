@@ -17,8 +17,8 @@ export default async function HomePage() {
       {/* Hero */}
       <section className="relative h-[70vh] min-h-[500px] flex items-center justify-center">
         <Image
-          src="https://images.unsplash.com/photo-1545048702-79362596cdc9?w=1600&q=80"
-          alt="Japanese pottery"
+          src="https://images.unsplash.com/photo-1725917482778-472d78c69278?w=1600&q=80"
+          alt="Japanese pottery bowls"
           fill
           className="object-cover"
           priority

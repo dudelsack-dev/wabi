@@ -9,6 +9,7 @@ export default function CheckoutPage() {
   const { items, getTotal, clearCart } = useCart();
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [orderError, setOrderError] = useState("");
 
   const [form, setForm] = useState({
     name: "",
@@ -26,9 +27,10 @@ export default function CheckoutPage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setSubmitting(true);
+    setOrderError("");
 
     try {
-      await fetch("/api/orders", {
+      const res = await fetch("/api/orders", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -42,10 +44,11 @@ export default function CheckoutPage() {
           customer: form,
         }),
       });
+      if (!res.ok) throw new Error("Failed to place order");
       clearCart();
       setSubmitted(true);
     } catch {
-      // silently handle
+      setOrderError("Something went wrong placing your order. Please try again.");
     } finally {
       setSubmitting(false);
     }
@@ -118,6 +121,11 @@ export default function CheckoutPage() {
           ))}
 
           <div className="pt-4 border-t border-cream">
+            {orderError && (
+              <p className="text-sm text-earth-red bg-earth-red/10 px-4 py-3 mb-4">
+                {orderError}
+              </p>
+            )}
             <p className="text-xs text-stone mb-4">
               Payment integration coming soon. Your order will be saved as pending.
             </p>
