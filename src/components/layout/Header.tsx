@@ -1,14 +1,17 @@
 "use client";
 
 import Link from "next/link";
-import { ShoppingBag, Menu, X } from "lucide-react";
+import { ShoppingBag, Heart, Menu, X } from "lucide-react";
 import { useState } from "react";
 import { useCart } from "@/components/cart/CartProvider";
+import { useWishlist } from "@/components/wishlist/WishlistProvider";
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const { getCount } = useCart();
+  const { getCount: getWishlistCount } = useWishlist();
   const count = getCount();
+  const wishlistCount = getWishlistCount();
 
   const navLinks = [
     { href: "/shop", label: "Shop" },
@@ -36,6 +39,14 @@ export default function Header() {
         </nav>
 
         <div className="flex items-center gap-4">
+          <Link href="/wishlist" className="relative p-2 text-stone-dark hover:text-charcoal transition-colors">
+            <Heart size={20} />
+            {wishlistCount > 0 && (
+              <span className="absolute -top-0.5 -right-0.5 bg-earth-red text-warm-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center">
+                {wishlistCount}
+              </span>
+            )}
+          </Link>
           <Link href="/cart" className="relative p-2 text-stone-dark hover:text-charcoal transition-colors">
             <ShoppingBag size={20} />
             {count > 0 && (

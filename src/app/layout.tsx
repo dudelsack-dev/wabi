@@ -3,6 +3,7 @@ import { Inter, Noto_Serif_JP } from "next/font/google";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import CartProvider from "@/components/cart/CartProvider";
+import WishlistProvider from "@/components/wishlist/WishlistProvider";
 import "./globals.css";
 
 const inter = Inter({
@@ -34,9 +35,11 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.variable} ${notoSerifJP.variable} antialiased`}>
         <CartProvider>
-          <Header />
-          <main className="min-h-screen">{children}</main>
-          <Footer />
+          <WishlistProvider>
+            <Header />
+            <main className="min-h-screen">{children}</main>
+            <Footer />
+          </WishlistProvider>
         </CartProvider>
       </body>
     </html>

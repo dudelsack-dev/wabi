@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Product } from "@/types";
 import { formatPrice } from "@/lib/products";
+import WishlistButton from "@/components/wishlist/WishlistButton";
 
 export default function ProductCard({ product }: { product: Product }) {
   const outOfStock = product.stock === 0;
@@ -23,6 +24,12 @@ export default function ProductCard({ product }: { product: Product }) {
             </span>
           </div>
         )}
+        <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+          <WishlistButton
+            product={product}
+            className="bg-warm-white/90 shadow-sm"
+          />
+        </div>
       </div>
       <div className="space-y-1">
         <h3 className="text-sm font-medium text-charcoal group-hover:text-charcoal-light transition-colors">
