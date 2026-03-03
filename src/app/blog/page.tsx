@@ -1,5 +1,5 @@
-import { getAllPosts } from "@/lib/blog";
-import BlogCard from "@/components/blog/BlogCard";
+import { getAllPosts, getAllTags } from "@/lib/blog";
+import BlogClient from "@/components/blog/BlogClient";
 import FadeIn from "@/components/ui/FadeIn";
 import type { Metadata } from "next";
 
@@ -10,6 +10,7 @@ export const metadata: Metadata = {
 
 export default function BlogPage() {
   const posts = getAllPosts();
+  const allTags = getAllTags();
 
   return (
     <div className="max-w-6xl mx-auto px-6 py-16">
@@ -20,13 +21,7 @@ export default function BlogPage() {
         </p>
       </FadeIn>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-        {posts.map((post, i) => (
-          <FadeIn key={post.slug} delay={i * 100}>
-            <BlogCard post={post} />
-          </FadeIn>
-        ))}
-      </div>
+      <BlogClient posts={posts} allTags={allTags} />
     </div>
   );
 }

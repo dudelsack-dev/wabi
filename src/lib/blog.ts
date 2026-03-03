@@ -33,3 +33,10 @@ export function getPostBySlug(slug: string): BlogPost | undefined {
   const posts = getAllPosts();
   return posts.find((p) => p.slug === slug);
 }
+
+export function getAllTags(): string[] {
+  const posts = getAllPosts();
+  const tags = new Set<string>();
+  posts.forEach((post) => post.tags.forEach((tag) => tags.add(tag)));
+  return Array.from(tags).sort();
+}

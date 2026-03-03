@@ -26,6 +26,18 @@ export default function BlogCard({ post }: { post: BlogPost }) {
           {post.title}
         </h3>
         <p className="text-sm text-stone-dark leading-relaxed">{post.excerpt}</p>
+        {post.tags.length > 0 && (
+          <div className="flex flex-wrap gap-1.5 pt-1">
+            {post.tags.map((tag) => (
+              <span
+                key={tag}
+                className="text-xs px-2 py-0.5 bg-cream text-stone"
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+        )}
       </div>
     </Link>
   );
