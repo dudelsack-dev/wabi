@@ -1,0 +1,25 @@
+name: Staging to Main Gate
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  gate:
+    name: Pre-production gate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Confirm this PR is from staging
+        run: |
+          if [ "${{ github.head_ref }}" != "staging" ]; then
+            echo "ERROR: Only the staging branch may merge directly to main."
+            echo "Head branch is: ${{ github.head_ref }}"
+            echo ""
+            echo "To ship to production:"
+            echo "  1. Open a PR from your branch to 'staging'"
+            echo "  2. Let CI pass and merge to staging"
+            echo "  3. Open a PR from 'staging' to 'main'"
+            exit 1
+          fi
+          echo "Branch check passed: merging staging -> main"
