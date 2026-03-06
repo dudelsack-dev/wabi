@@ -16,13 +16,29 @@ const notoSerifJP = Noto_Serif_JP({
   weight: ["400", "700"],
 });
 
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "https://wabi.store";
+const DESCRIPTION =
+  "Handcrafted Japanese pottery and kitchenware. Each piece carries the quiet beauty of wabi-sabi — imperfect, impermanent, and incomplete.";
+
 export const metadata: Metadata = {
   title: {
     default: "Wabi — Japanese Artisanal Pottery & Kitchenware",
     template: "%s | Wabi",
   },
-  description:
-    "Handcrafted Japanese pottery and kitchenware. Each piece carries the quiet beauty of wabi-sabi — imperfect, impermanent, and incomplete.",
+  description: DESCRIPTION,
+  metadataBase: new URL(BASE_URL),
+  openGraph: {
+    type: "website",
+    siteName: "Wabi",
+    title: "Wabi — Japanese Artisanal Pottery & Kitchenware",
+    description: DESCRIPTION,
+    url: BASE_URL,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Wabi — Japanese Artisanal Pottery & Kitchenware",
+    description: DESCRIPTION,
+  },
 };
 
 export default function RootLayout({

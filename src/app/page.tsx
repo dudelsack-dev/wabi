@@ -9,6 +9,20 @@ export const dynamic = "force-dynamic";
 import BlogCard from "@/components/blog/BlogCard";
 import FadeIn from "@/components/ui/FadeIn";
 
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "https://wabi.store";
+
+const storeJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Store",
+  name: "Wabi",
+  description:
+    "Handcrafted Japanese pottery and kitchenware. Each piece carries the quiet beauty of wabi-sabi — imperfect, impermanent, and incomplete.",
+  url: BASE_URL,
+  priceRange: "¥¥¥",
+  currenciesAccepted: "JPY",
+  paymentAccepted: "Invoice",
+};
+
 export default async function HomePage() {
   const featured = await getFeaturedProducts();
   const latestPosts = getAllPosts().slice(0, 3);
@@ -19,6 +33,11 @@ export default async function HomePage() {
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(storeJsonLd) }}
+      />
+
       {/* Hero */}
       <section className="relative h-[70vh] min-h-[500px] flex items-center justify-center">
         <Image

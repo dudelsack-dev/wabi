@@ -1,0 +1,464 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Wabi API",
+    "description": "Public API for Wabi — Japanese artisanal pottery and kitchenware. Enables AI agents and third-party clients to browse products and place orders programmatically.",
+    "version": "1.0.0",
+    "contact": {
+      "name": "Wabi",
+      "url": "https://wabi.store"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://wabi.store",
+      "description": "Production"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Products",
+      "description": "Browse the product catalog"
+    },
+    {
+      "name": "Orders",
+      "description": "Place orders"
+    }
+  ],
+  "paths": {
+    "/api/products": {
+      "get": {
+        "tags": ["Products"],
+        "summary": "List products",
+        "description": "Returns all products. Supports filtering by category, stock availability, and featured status.",
+        "operationId": "listProducts",
+        "parameters": [
+          {
+            "name": "category",
+            "in": "query",
+            "description": "Filter by category",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["pottery", "kitchenware"]
+            }
+          },
+          {
+            "name": "inStock",
+            "in": "query",
+            "description": "When true, only return products with stock > 0",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "featured",
+            "in": "query",
+            "description": "When true, only return featured products",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of products",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Product"
+                      }
+                    },
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "total": {
+                          "type": "integer",
+                          "description": "Total number of products returned"
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "data": [
+                    {
+                      "slug": "kintsugi-bowl",
+                      "name": "Kintsugi Bowl",
+                      "nameJp": "金継ぎ茶碗",
+                      "description": "A handcrafted bowl celebrating the art of repair...",
+                      "price": 18000,
+                      "currency": "JPY",
+                      "category": "pottery",
+                      "artisan": "Kenji Mori",
+                      "origin": "Kyoto",
+                      "inStock": true,
+                      "stock": 4,
+                      "featured": true,
+                      "images": ["https://images.unsplash.com/photo-example"],
+                      "url": "https://wabi.store/shop/kintsugi-bowl"
+                    }
+                  ],
+                  "meta": { "total": 1 }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/products/{slug}": {
+      "get": {
+        "tags": ["Products"],
+        "summary": "Get a product",
+        "description": "Returns a single product by its slug identifier.",
+        "operationId": "getProduct",
+        "parameters": [
+          {
+            "name": "slug",
+            "in": "path",
+            "description": "Product slug (URL identifier)",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "kintsugi-bowl"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Product found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Product"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Product not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/orders": {
+      "post": {
+        "tags": ["Orders"],
+        "summary": "Place an order",
+        "description": "Creates a new order. Orders are saved with status 'pending' and confirmed manually via email. Stock is decremented immediately.",
+        "operationId": "createOrder",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderRequest"
+              },
+              "example": {
+                "items": [
+                  {
+                    "slug": "kintsugi-bowl",
+                    "name": "Kintsugi Bowl",
+                    "price": 18000,
+                    "quantity": 1
+                  }
+                ],
+                "subtotal": 18000,
+                "customer": {
+                  "name": "Yuki Tanaka",
+                  "email": "yuki@example.com",
+                  "address": "123 Higashiyama",
+                  "city": "Kyoto",
+                  "postalCode": "605-0862",
+                  "country": "Japan"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Order placed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Product": {
+        "type": "object",
+        "properties": {
+          "slug": {
+            "type": "string",
+            "description": "URL-safe unique identifier",
+            "example": "kintsugi-bowl"
+          },
+          "name": {
+            "type": "string",
+            "description": "Product name in English",
+            "example": "Kintsugi Bowl"
+          },
+          "nameJp": {
+            "type": "string",
+            "description": "Product name in Japanese",
+            "example": "金継ぎ茶碗"
+          },
+          "description": {
+            "type": "string",
+            "description": "Full product description"
+          },
+          "price": {
+            "type": "integer",
+            "description": "Price in Japanese Yen (JPY)",
+            "example": 18000
+          },
+          "currency": {
+            "type": "string",
+            "description": "ISO 4217 currency code",
+            "example": "JPY"
+          },
+          "category": {
+            "type": "string",
+            "enum": ["pottery", "kitchenware"],
+            "example": "pottery"
+          },
+          "artisan": {
+            "type": "string",
+            "description": "Name of the craftsperson who made the piece",
+            "example": "Kenji Mori"
+          },
+          "origin": {
+            "type": "string",
+            "description": "Region or city of origin in Japan",
+            "example": "Kyoto"
+          },
+          "inStock": {
+            "type": "boolean",
+            "description": "Whether the product is currently in stock",
+            "example": true
+          },
+          "stock": {
+            "type": "integer",
+            "description": "Current stock count",
+            "example": 4
+          },
+          "featured": {
+            "type": "boolean",
+            "description": "Whether the product is featured on the homepage",
+            "example": true
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "description": "Array of image URLs"
+          },
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "description": "Full URL to the product page",
+            "example": "https://wabi.store/shop/kintsugi-bowl"
+          }
+        },
+        "required": ["slug", "name", "price", "currency", "category", "inStock", "url"]
+      },
+      "OrderItem": {
+        "type": "object",
+        "properties": {
+          "slug": {
+            "type": "string",
+            "description": "Product slug",
+            "example": "kintsugi-bowl"
+          },
+          "name": {
+            "type": "string",
+            "description": "Product name at time of order",
+            "example": "Kintsugi Bowl"
+          },
+          "price": {
+            "type": "integer",
+            "description": "Unit price in JPY at time of order",
+            "example": 18000
+          },
+          "quantity": {
+            "type": "integer",
+            "description": "Number of units ordered",
+            "minimum": 1,
+            "example": 1
+          }
+        },
+        "required": ["slug", "name", "price", "quantity"]
+      },
+      "Customer": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Yuki Tanaka"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "yuki@example.com"
+          },
+          "address": {
+            "type": "string",
+            "example": "123 Higashiyama"
+          },
+          "city": {
+            "type": "string",
+            "example": "Kyoto"
+          },
+          "postalCode": {
+            "type": "string",
+            "example": "605-0862"
+          },
+          "country": {
+            "type": "string",
+            "example": "Japan"
+          }
+        },
+        "required": ["name", "email", "address", "city", "postalCode", "country"]
+      },
+      "OrderRequest": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OrderItem"
+            },
+            "minItems": 1
+          },
+          "subtotal": {
+            "type": "integer",
+            "description": "Total order value in JPY",
+            "example": 18000
+          },
+          "customer": {
+            "$ref": "#/components/schemas/Customer"
+          }
+        },
+        "required": ["items", "subtotal", "customer"]
+      },
+      "OrderResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": true
+          },
+          "orderId": {
+            "type": "string",
+            "description": "Unique order identifier",
+            "example": "wabi-1712345678901"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["pending"],
+            "example": "pending"
+          },
+          "message": {
+            "type": "string",
+            "example": "Order received. We will confirm via email and arrange payment."
+          }
+        }
+      },
+      "ValidationError": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": false
+          },
+          "error": {
+            "type": "string",
+            "example": "Validation failed"
+          },
+          "fields": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Map of field paths to error messages",
+            "example": {
+              "customer.email": "Required",
+              "items[0].quantity": "Must be a positive integer"
+            }
+          }
+        }
+      },
+      "ServerError": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": false
+          },
+          "error": {
+            "type": "string",
+            "example": "Failed to process order"
+          }
+        }
+      },
+      "NotFoundError": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "example": "Product not found"
+          },
+          "slug": {
+            "type": "string",
+            "example": "unknown-product"
+          }
+        }
+      }
+    }
+  }
+}

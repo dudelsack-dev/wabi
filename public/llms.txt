@@ -1,0 +1,135 @@
+# Wabi
+
+Wabi is a Japanese artisanal e-commerce store specializing in handcrafted pottery and kitchenware.
+Each piece embodies wabi-sabi — the beauty found in imperfection, impermanence, and incompleteness.
+
+## What you can do
+
+- Browse the full product catalog or filter by category, availability, or featured status
+- Retrieve detailed information about a specific product (price, stock, artisan, origin)
+- Place orders on behalf of users programmatically
+
+## API Reference
+
+Base URL: https://wabi.store
+
+All API endpoints return JSON and support CORS from any origin.
+All prices are in Japanese Yen (JPY).
+
+---
+
+### List products
+
+GET /api/products
+
+Optional query parameters:
+- category=pottery|kitchenware — filter by product category
+- inStock=true — only products with available stock
+- featured=true — only featured/highlighted products
+
+Example:
+  GET /api/products?category=pottery&inStock=true
+
+Response:
+```json
+{
+  "data": [
+    {
+      "slug": "kintsugi-bowl",
+      "name": "Kintsugi Bowl",
+      "nameJp": "金継ぎ茶碗",
+      "description": "A handcrafted bowl celebrating the art of repair...",
+      "price": 18000,
+      "currency": "JPY",
+      "category": "pottery",
+      "artisan": "Kenji Mori",
+      "origin": "Kyoto",
+      "inStock": true,
+      "stock": 4,
+      "featured": true,
+      "images": ["https://..."],
+      "url": "https://wabi.store/shop/kintsugi-bowl"
+    }
+  ],
+  "meta": { "total": 1 }
+}
+```
+
+---
+
+### Get a single product
+
+GET /api/products/{slug}
+
+Example:
+  GET /api/products/kintsugi-bowl
+
+Returns the product object directly (same fields as above).
+Returns 404 with `{ "error": "Product not found", "slug": "..." }` if not found.
+
+---
+
+### Place an order
+
+POST /api/orders
+Content-Type: application/json
+
+Request body:
+```json
+{
+  "items": [
+    {
+      "slug": "kintsugi-bowl",
+      "name": "Kintsugi Bowl",
+      "price": 18000,
+      "quantity": 1
+    }
+  ],
+  "subtotal": 18000,
+  "customer": {
+    "name": "Yuki Tanaka",
+    "email": "yuki@example.com",
+    "address": "123 Higashiyama",
+    "city": "Kyoto",
+    "postalCode": "605-0862",
+    "country": "Japan"
+  }
+}
+```
+
+Success response (200):
+```json
+{
+  "success": true,
+  "orderId": "wabi-1712345678901",
+  "status": "pending",
+  "message": "Order received. We will confirm via email and arrange payment."
+}
+```
+
+Validation error response (400):
+```json
+{
+  "success": false,
+  "error": "Validation failed",
+  "fields": {
+    "customer.email": "Required",
+    "items[0].quantity": "Must be a positive integer"
+  }
+}
+```
+
+---
+
+## Important notes
+
+- **Payment**: Wabi does not process payments automatically. Orders are saved as `pending` and confirmed manually. Payment is arranged via email after order receipt.
+- **Stock**: Stock levels are live. `inStock: false` means the item cannot be ordered. Stock is decremented immediately when an order is placed.
+- **Order IDs**: Order IDs follow the format `wabi-{timestamp}`.
+- **Machine-readable spec**: Full OpenAPI 3.0 specification available at https://wabi.store/openapi.json
+
+## Additional resources
+
+- Product catalog: https://wabi.store/shop
+- OpenAPI spec: https://wabi.store/openapi.json
+- Sitemap: https://wabi.store/sitemap.xml
