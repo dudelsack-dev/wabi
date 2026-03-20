@@ -19,10 +19,11 @@ export async function POST(request: Request) {
 
     // Decrement stock for each item
     for (const item of body.items) {
-      await supabase.rpc("decrement_stock", {
+      const { error: stockError } = await supabase.rpc("decrement_stock", {
         product_slug: item.slug,
         qty: item.quantity,
       });
+      if (stockError) console.error("Stock decrement error:", stockError);
     }
 
     return NextResponse.json({ success: true, orderId: order.id });

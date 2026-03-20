@@ -30,27 +30,30 @@ export default function AdminDashboardPage() {
 
   useEffect(() => {
     async function load() {
-      const supabase = createBrowserClient();
+      try {
+        const supabase = createBrowserClient();
 
-      const [productsRes, ordersRes, lowStockRes] = await Promise.all([
-        supabase.from("products").select("stock"),
-        supabase.from("orders").select("*").order("created_at", { ascending: false }).limit(5),
-        supabase.from("products").select("slug, name, stock").lt("stock", 3).order("stock"),
-      ]);
+        const [productsRes, ordersRes, lowStockRes] = await Promise.all([
+          supabase.from("products").select("stock"),
+          supabase.from("orders").select("*").order("created_at", { ascending: false }).limit(5),
+          supabase.from("products").select("slug, name, stock").lt("stock", 3).order("stock"),
+        ]);
 
-      const products = productsRes.data || [];
-      const orders = ordersRes.data || [];
-      const lowStock = lowStockRes.data || [];
+        const products = productsRes.data || [];
+        const orders = ordersRes.data || [];
+        const lowStock = lowStockRes.data || [];
 
-      setData({
-        totalProducts: products.length,
-        lowStockCount: lowStock.length,
-        pendingOrders: orders.filter((o) => o.status === "pending").length,
-        recentRevenue: orders.reduce((sum, o) => sum + (o.subtotal || 0), 0),
-        recentOrders: orders,
-        lowStockProducts: lowStock,
-      });
-      setLoading(false);
+        setData({
+          totalProducts: products.length,
+          lowStockCount: lowStock.length,
+          pendingOrders: orders.filter((o) => o.status === "pending").length,
+          recentRevenue: orders.reduce((sum, o) => sum + (o.subtotal || 0), 0),
+          recentOrders: orders,
+          lowStockProducts: lowStock,
+        });
+      } finally {
+        setLoading(false);
+      }
     }
     load();
   }, []);

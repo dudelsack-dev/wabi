@@ -24,13 +24,16 @@ export default function AdminOrdersPage() {
 
   useEffect(() => {
     async function load() {
-      const supabase = createBrowserClient();
-      const { data } = await supabase
-        .from("orders")
-        .select("*")
-        .order("created_at", { ascending: false });
-      setOrders((data as OrderRow[]) || []);
-      setLoading(false);
+      try {
+        const supabase = createBrowserClient();
+        const { data } = await supabase
+          .from("orders")
+          .select("*")
+          .order("created_at", { ascending: false });
+        setOrders((data as OrderRow[]) || []);
+      } finally {
+        setLoading(false);
+      }
     }
     load();
   }, []);

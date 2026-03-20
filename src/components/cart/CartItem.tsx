@@ -13,7 +13,7 @@ export default function CartItemRow({ item }: { item: CartItemType }) {
     <div className="flex gap-4 py-6 border-b border-cream">
       <div className="relative w-24 h-24 bg-cream flex-shrink-0">
         <Image
-          src={item.product.images[0]}
+          src={item.product.images[0] ?? ""}
           alt={item.product.name}
           fill
           className="object-cover"

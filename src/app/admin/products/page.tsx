@@ -26,13 +26,16 @@ export default function AdminProductsPage() {
   }, []);
 
   async function loadProducts() {
-    const supabase = createBrowserClient();
-    const { data } = await supabase
-      .from("products")
-      .select("slug, name, name_jp, price, category, stock, images")
-      .order("created_at");
-    setProducts((data as ProductRow[]) || []);
-    setLoading(false);
+    try {
+      const supabase = createBrowserClient();
+      const { data } = await supabase
+        .from("products")
+        .select("slug, name, name_jp, price, category, stock, images")
+        .order("created_at");
+      setProducts((data as ProductRow[]) || []);
+    } finally {
+      setLoading(false);
+    }
   }
 
   async function handleDelete(slug: string) {
