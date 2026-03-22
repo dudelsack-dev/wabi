@@ -20,7 +20,7 @@ export default function Header() {
     <header className="sticky top-0 z-50 bg-warm-white/90 backdrop-blur-sm border-b border-cream">
       <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
         <Link href="/" className="font-serif text-xl tracking-wide text-charcoal">
-          侘 <span className="text-base ml-1">wabi</span>
+          侘 <span className="text-base ml-1">sabi wabi</span>
         </Link>
 
         <nav className="hidden md:flex items-center gap-8">
