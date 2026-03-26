@@ -164,10 +164,10 @@ export default function ProductForm({
             onChange={(e) => updateField("category", e.target.value)}
             className="w-full px-4 py-2.5 text-sm bg-warm-white border border-stone-light/50 focus:outline-none focus:border-stone transition-colors rounded-md"
           >
-            <option value="bowls">Beautiful Bowls</option>
-            <option value="chopsticks">Artisanal Chopsticks</option>
-            <option value="cups">Hand Crafted Cups</option>
-            <option value="knives">Japanese Knives</option>
+            <option value="bowls">Bowls</option>
+            <option value="cups">Cups</option>
+            <option value="chopsticks">Chopsticks</option>
+            <option value="knives">Knives</option>
           </select>
         </div>
         <div>

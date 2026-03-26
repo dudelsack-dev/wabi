@@ -12,10 +12,10 @@ export default function CategoryFilter({
   onChange: (cat: Category) => void;
 }) {
   const categories: { value: Category; label: string }[] = [
-    { value: "bowls", label: "Beautiful Bowls" },
-    { value: "chopsticks", label: "Artisanal Chopsticks" },
-    { value: "cups", label: "Hand Crafted Cups" },
-    { value: "knives", label: "Japanese Knives" },
+    { value: "bowls", label: "Bowls" },
+    { value: "cups", label: "Cups" },
+    { value: "chopsticks", label: "Chopsticks" },
+    { value: "knives", label: "Knives" },
     { value: "all", label: "Browse All" },
   ];
 
