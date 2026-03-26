@@ -2,7 +2,7 @@
 
 import clsx from "clsx";
 
-type Category = "all" | "pottery" | "kitchenware";
+type Category = "all" | "bowls" | "chopsticks" | "cups" | "knives";
 
 export default function CategoryFilter({
   active,
@@ -12,9 +12,11 @@ export default function CategoryFilter({
   onChange: (cat: Category) => void;
 }) {
   const categories: { value: Category; label: string }[] = [
-    { value: "all", label: "All" },
-    { value: "pottery", label: "Pottery" },
-    { value: "kitchenware", label: "Kitchenware" },
+    { value: "bowls", label: "Beautiful Bowls" },
+    { value: "chopsticks", label: "Artisanal Chopsticks" },
+    { value: "cups", label: "Hand Crafted Cups" },
+    { value: "knives", label: "Japanese Knives" },
+    { value: "all", label: "Browse All" },
   ];
 
   return (

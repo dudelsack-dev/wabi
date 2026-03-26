@@ -8,7 +8,7 @@ interface ProductRow {
   description: string;
   price: number;
   images: string[];
-  category: "pottery" | "kitchenware";
+  category: "bowls" | "chopsticks" | "cups" | "knives";
   artisan: string;
   origin: string;
   stock: number;
@@ -55,7 +55,7 @@ export async function getProductBySlug(slug: string): Promise<Product | undefine
 }
 
 export async function getProductsByCategory(
-  category: "pottery" | "kitchenware"
+  category: "bowls" | "chopsticks" | "cups" | "knives"
 ): Promise<Product[]> {
   try {
     const supabase = createServerClient();
