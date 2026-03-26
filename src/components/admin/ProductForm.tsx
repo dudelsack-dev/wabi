@@ -10,7 +10,7 @@ interface ProductFormData {
   slug: string;
   description: string;
   price: number;
-  category: "pottery" | "kitchenware";
+  category: "bowls" | "chopsticks" | "cups" | "knives";
   artisan: string;
   origin: string;
   stock: number;
@@ -43,7 +43,7 @@ export default function ProductForm({
       slug: "",
       description: "",
       price: 0,
-      category: "pottery",
+      category: "bowls",
       artisan: "",
       origin: "",
       stock: 10,
@@ -164,8 +164,10 @@ export default function ProductForm({
             onChange={(e) => updateField("category", e.target.value)}
             className="w-full px-4 py-2.5 text-sm bg-warm-white border border-stone-light/50 focus:outline-none focus:border-stone transition-colors rounded-md"
           >
-            <option value="pottery">Pottery</option>
-            <option value="kitchenware">Kitchenware</option>
+            <option value="bowls">Beautiful Bowls</option>
+            <option value="chopsticks">Artisanal Chopsticks</option>
+            <option value="cups">Hand Crafted Cups</option>
+            <option value="knives">Japanese Knives</option>
           </select>
         </div>
         <div>

@@ -6,7 +6,7 @@ import ProductCard from "@/components/product/ProductCard";
 import CategoryFilter from "@/components/product/CategoryFilter";
 import FadeIn from "@/components/ui/FadeIn";
 
-type Category = "all" | "pottery" | "kitchenware";
+type Category = "all" | "bowls" | "chopsticks" | "cups" | "knives";
 
 export default function ShopClient({ products }: { products: Product[] }) {
   const [category, setCategory] = useState<Category>("all");

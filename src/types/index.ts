@@ -5,7 +5,7 @@ export interface Product {
   description: string;
   price: number;
   images: string[];
-  category: "pottery" | "kitchenware";
+  category: "bowls" | "chopsticks" | "cups" | "knives";
   artisan: string;
   origin: string;
   inStock: boolean;
