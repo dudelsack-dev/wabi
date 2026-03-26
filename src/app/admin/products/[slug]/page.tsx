@@ -14,7 +14,7 @@ export default function EditProductPage() {
     slug: string;
     description: string;
     price: number;
-    category: "pottery" | "kitchenware";
+    category: "bowls" | "chopsticks" | "cups" | "knives";
     artisan: string;
     origin: string;
     stock: number;
