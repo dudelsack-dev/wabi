@@ -19,7 +19,7 @@ export default function Footer() {
       <div className="max-w-6xl mx-auto px-6 py-16">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
           <div>
-            <h3 className="font-serif text-lg mb-4">侘 wabi</h3>
+            <h3 className="font-serif text-lg mb-4">侘 sabi wabi</h3>
             <p className="text-sm text-stone-dark leading-relaxed">
               Japanese artisanal pottery and kitchenware, crafted by hand with centuries of tradition.
             </p>
@@ -67,7 +67,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="mt-16 pt-6 border-t border-stone-light/30 text-center text-xs text-stone">
-          &copy; {new Date().getFullYear()} Wabi. All things imperfect.
+          &copy; {new Date().getFullYear()} Sabi Wabi. All things imperfect.
         </div>
       </div>
     </footer>

@@ -18,8 +18,8 @@ const notoSerifJP = Noto_Serif_JP({
 
 export const metadata: Metadata = {
   title: {
-    default: "Wabi — Japanese Artisanal Pottery & Kitchenware",
-    template: "%s | Wabi",
+    default: "Sabi Wabi — Japanese Artisanal Pottery & Kitchenware",
+    template: "%s | Sabi Wabi",
   },
   description:
     "Handcrafted Japanese pottery and kitchenware. Each piece carries the quiet beauty of wabi-sabi — imperfect, impermanent, and incomplete.",

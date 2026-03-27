@@ -45,7 +45,7 @@ export default function AdminLoginPage() {
     <div className="min-h-screen bg-warm-white flex items-center justify-center px-6">
       <div className="w-full max-w-sm">
         <div className="text-center mb-10">
-          <h1 className="font-serif text-2xl text-charcoal mb-2">侘 wabi</h1>
+          <h1 className="font-serif text-2xl text-charcoal mb-2">侘 sabi wabi</h1>
           <p className="text-sm text-stone">Admin Login</p>
         </div>
 

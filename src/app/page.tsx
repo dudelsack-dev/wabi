@@ -32,7 +32,7 @@ export default async function HomePage() {
         <div className="relative z-10 text-center px-6">
           <FadeIn>
             <h1 className="font-serif text-4xl md:text-6xl text-warm-white mb-4 tracking-wide">
-              侘 wabi
+              侘 sabi wabi
             </h1>
             <p className="text-warm-white/80 text-lg md:text-xl max-w-lg mx-auto leading-relaxed">
               Japanese artisanal pottery and kitchenware, crafted with the quiet beauty of imperfection.

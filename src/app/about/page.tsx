@@ -4,14 +4,14 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "About",
-  description: "The story behind Wabi — connecting Japanese artisans with the world through the philosophy of wabi-sabi.",
+  description: "The story behind Sabi Wabi — connecting Japanese artisans with the world through the philosophy of wabi-sabi.",
 };
 
 export default function AboutPage() {
   return (
     <div className="max-w-3xl mx-auto px-6 py-16">
       <FadeIn>
-        <h1 className="font-serif text-3xl md:text-4xl text-charcoal mb-8">About Wabi</h1>
+        <h1 className="font-serif text-3xl md:text-4xl text-charcoal mb-8">About Sabi Wabi</h1>
       </FadeIn>
 
       <FadeIn delay={100}>
@@ -45,7 +45,7 @@ export default function AboutPage() {
         <FadeIn delay={300}>
           <h2 className="font-serif text-xl text-charcoal mb-3">Our Mission</h2>
           <p>
-            Wabi exists to connect the artisans of Japan with people around the world
+            Sabi Wabi exists to connect the artisans of Japan with people around the world
             who value craft, intentionality, and the beauty of handmade things. We
             work directly with potters, blacksmiths, woodworkers, and lacquer artists
             — many from families that have practiced their craft for generations.
@@ -53,7 +53,7 @@ export default function AboutPage() {
           <p className="mt-4">
             Every piece we carry has been chosen with care. We visit the workshops, we
             understand the processes, we know the people. When you receive something
-            from Wabi, you receive not just an object but a connection to its maker and
+            from Sabi Wabi, you receive not just an object but a connection to its maker and
             the tradition it carries.
           </p>
         </FadeIn>
