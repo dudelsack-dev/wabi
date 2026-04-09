@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { LayoutDashboard, Package, ShoppingCart, Settings, ArrowLeft, LogOut } from "lucide-react";
+import { LayoutDashboard, Package, ShoppingCart, Settings, BookOpen, ArrowLeft, LogOut } from "lucide-react";
 import { createBrowserClient } from "@/lib/supabase";
 import clsx from "clsx";
 
@@ -11,6 +11,7 @@ const navItems = [
   { href: "/admin/products", label: "Products", icon: Package },
   { href: "/admin/orders", label: "Orders", icon: ShoppingCart },
   { href: "/admin/settings", label: "Settings", icon: Settings },
+  { href: "/admin/docs", label: "Docs", icon: BookOpen },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
