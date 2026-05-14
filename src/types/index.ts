@@ -1,45 +1,50 @@
-export interface Product {
-  slug: string;
-  name: string;
-  nameJp: string;
-  description: string;
-  price: number;
-  images: string[];
-  category: "bowls" | "chopsticks" | "cups" | "knives";
-  artisan: string;
-  origin: string;
-  inStock: boolean;
-  stock?: number;
-  featured?: boolean;
+export type IntentType = 'WANT' | 'HAVE' | 'REVOKED'
+
+export interface Intent {
+  id: string
+  userId: string
+  type: IntentType
+  category: string
+  item: string
+  brand?: string
+  confidence: number
+  active: boolean
+  metadata?: Record<string, unknown>
+  createdAt: string
+  updatedAt: string
+  expiresAt?: string
 }
 
-export interface CartItem {
-  product: Product;
-  quantity: number;
+export interface ParsedIntent {
+  type: IntentType
+  category: string
+  item: string
+  brand?: string
+  confidence: number
 }
 
-export interface Order {
-  id: string;
-  items: { slug: string; name: string; price: number; quantity: number }[];
-  subtotal: number;
-  customer: {
-    name: string;
-    email: string;
-    address: string;
-    city: string;
-    postalCode: string;
-    country: string;
-  };
-  status: "pending" | "confirmed" | "shipped" | "delivered" | "cancelled";
-  createdAt: string;
+export interface SyncResult {
+  platform: string
+  status: 'success' | 'failure' | 'pending' | 'stub'
+  message?: string
+  response?: unknown
 }
 
-export interface BlogPost {
-  slug: string;
-  title: string;
-  date: string;
-  excerpt: string;
-  coverImage: string;
-  tags: string[];
-  content: string;
+export interface AdProfile {
+  userId: string
+  wants: Intent[]
+  has: Intent[]
+  revoked: Intent[]
+  platforms: PlatformConfig[]
 }
+
+export interface PlatformConfig {
+  userId: string
+  platform: string
+  enabled: boolean
+  lastSyncedAt?: string
+}
+
+export type Platform = 'google-ads' | 'instagram' | 'tiktok' | 'facebook' | 'spotify'
+
+export const PLATFORMS: Platform[] = ['google-ads', 'instagram', 'tiktok', 'facebook', 'spotify']
